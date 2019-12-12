@@ -12,8 +12,8 @@ import {
 } from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage';
-import BackgroundGeolocation from "react-native-background-geolocation";
 import BackgroundFetch from "react-native-background-fetch";
+import BackgroundGeolocation from "./react-native-background-geolocation";
 
 export default class App extends Component {
   constructor(props) {
@@ -26,7 +26,11 @@ export default class App extends Component {
 
   async componentDidMount() {
     await this.loadSettings();
-    this.configureBackgroundFetch();
+
+    var endpoint_url = this.state.endpoint_url;
+    if (endpoint_url !== "") {
+      this.configureBackgroundFetch();
+    }
   }
 
   configureBackgroundFetch() {
@@ -46,12 +50,15 @@ export default class App extends Component {
       requiresBatteryNotLow: false,
       requiresStorageNotLow: false
     }, async () => {
+
       let location = await BackgroundGeolocation.getCurrentPosition({ extras: { 'context': 'background-position' } });
       _self.sendData(location);
       BackgroundFetch.finish(BackgroundFetch.FETCH_RESULT_NEW_DATA);
+
     }, (error) => {
       console.log('RNBackgroundFetch failed to start')
     });
+
   }
 
   onChangeValue = (type, text) => {
@@ -95,11 +102,12 @@ export default class App extends Component {
 
 
   loadSettings = async () => {
-    const frequency = await AsyncStorage.getItem('_frequency');
+    var frequency = await AsyncStorage.getItem('_frequency');
     if (frequency !== null) {
       this.setState({ frequency });
     }
-    const endpoint_url = await AsyncStorage.getItem('_endpoint_url');
+
+    var endpoint_url = await AsyncStorage.getItem('_endpoint_url');
     if (endpoint_url !== null) {
       this.setState({ endpoint_url });
     }

@@ -2,7 +2,7 @@
 
 - Clone Repository
 - Install Dependencies: **yarn install**
-- Install Dependencies: **yarn start**
+- Start React Server: **yarn start**
 - Open new terminal & Run Project: **react-native run-android**
 
 ## Screenshot

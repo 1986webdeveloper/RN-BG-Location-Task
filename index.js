@@ -24,14 +24,14 @@ AppRegistry.registerComponent(appName, () => App);
 let BackgroundGeolocationHeadlessTask = async (event) => {
     switch (event.name) {
         case 'heartbeat':
-            // var username = await AsyncStorage.getItem(config.USERNAME_KEY);
-            // if (username !== null) {
-            //     username = username.toLowerCase();
-            //     var location = await BackgroundGeolocation.getCurrentPosition({ extras: { 'context': 'bg-location' } });
-            //     var locationData = { username: username, location: JSON.stringify(location) };
+            var username = await AsyncStorage.getItem(config.USERNAME_KEY);
+            if (username !== null) {
+                username = username.toLowerCase();
+                var location = await BackgroundGeolocation.getCurrentPosition({ extras: { 'context': 'bg-location' } });
+                var locationData = { username: username, location: JSON.stringify(location) };
         
-            //     await API.graphql(graphqlOperation(createLocations, { input: locationData }));
-            // }
+                await API.graphql(graphqlOperation(createLocations, { input: locationData }));
+            }
             break;
     }
 }

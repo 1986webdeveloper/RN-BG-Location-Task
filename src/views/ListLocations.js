@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
+    ActivityIndicator, 
     Text
 } from 'react-native';
 
@@ -47,11 +48,11 @@ export default class ListLocations extends Component {
                 const allLocations = await API.graphql(graphqlOperation(listLocationss, {
                     filter: {
                         username: {
-                            eq: username
+                            eq: username.toLowerCase()
                         }
-                    }
+                    },
+                    limit: 1000
                 }));
-
                 if (allLocations.data.listLocationss.items) {
                     this.setState({ locations: allLocations.data.listLocationss.items });
                 }
@@ -92,7 +93,7 @@ export default class ListLocations extends Component {
             <View style={styles.container} >
                 {
                     dataLoading ? (
-                        <Text style={styles.textStyle1}>Loading...</Text>
+                        <ActivityIndicator style={styles.loader} size="large" color="#0000ff" />
                     ) : (
                             locations.length > 0 ? (
                                 locations && locations.map((item, index) => {
@@ -120,6 +121,9 @@ const styles = StyleSheet.create({
     container: {
         padding: 5,
         paddingHorizontal: 10
+    },
+    loader:{
+        marginTop: 30
     },
     textStyle1:{
         textAlign: "center",

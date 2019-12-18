@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
+  ActivityIndicator,
   Picker
 } from "react-native";
 
@@ -16,6 +17,7 @@ import config from "./../config";
 import API, { graphqlOperation } from "@aws-amplify/api";
 import awsconfig from "./../../aws-exports";
 import { createLocations } from "./../graphql/mutations";
+import { JS } from "aws-amplify";
 
 API.configure(awsconfig);
 
@@ -26,12 +28,31 @@ export default class HomePage extends Component {
       frequency: "15",
       username: "",
       endpoint_url: config.SERVER_URL,
-      userAuth: false
+      userAuth: false,
+      isSaveLoading: false
     };
   }
 
   async componentDidMount() {
     await this.loadSettings();
+
+    BackgroundGeolocation.ready(
+      {
+        desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
+        enableHeadless: true,
+        distanceFilter: 10,
+        enableHeadless: true,
+        stopOnTerminate: false,
+        startOnBoot: true
+      },
+      state => {
+        if (!state.enabled) {
+          BackgroundGeolocation.start(function() {
+            console.log("- Start success");
+          });
+        }
+      }
+    );
 
     var username = this.state.username;
     if (username !== "") {
@@ -57,7 +78,7 @@ export default class HomePage extends Component {
         requiresStorageNotLow: false
       },
       async () => {
-        _self.sendLocationData();
+        _self.sendLocationData(false);
         BackgroundFetch.finish(BackgroundFetch.FETCH_RESULT_NEW_DATA);
       },
       error => {
@@ -65,46 +86,36 @@ export default class HomePage extends Component {
       }
     );
 
-    BackgroundGeolocation.stop();
-    BackgroundGeolocation.ready(
-      {
-        desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
-        heartbeatInterval: frequency * 60,
-        enableHeadless: true,
-        distanceFilter: 10,
-        enableHeadless: true,
-        stopOnTerminate: false,
-        startOnBoot: true
-      },
-      state => {
-        if (!state.enabled) {
-          BackgroundGeolocation.start(function() {
-            console.log("- Start success");
-          });
-        }
-      }
-    );
+    let config:any = {};
+    config['heartbeatInterval'] = frequency * 60;
+    BackgroundGeolocation.setConfig(config);
   }
 
   onChangeValue = (type, text) => {
+    text = text.replace(/[^A-Z0-9]/ig, "").toLowerCase();
     this.setState({ [type]: text });
   };
 
-  sendLocationData = async () => {
-    alert("Location save successfully");
+  sendLocationData = async (isload = true) => {
+    if(isload) this.setState({ isSaveLoading: true });
     let location = await BackgroundGeolocation.getCurrentPosition({
       extras: { context: "force-location" }
     });
     var username = this.state.username;
-    username = username.toLowerCase();
+    username = username.toLowerCase(); 
     var locationData = {
       username: username,
       location: JSON.stringify(location)
     };
     if (username !== "") {
-      await API.graphql(
+      const response = await API.graphql(
         graphqlOperation(createLocations, { input: locationData })
       );
+    }
+
+    if(isload) {
+      this.setState({ isSaveLoading: false });
+      alert("Location save successfully");
     }
   };
 
@@ -141,7 +152,7 @@ export default class HomePage extends Component {
   };
 
   render() {
-    const { frequency, username, userAuth } = this.state;
+    const { frequency, username, userAuth, isSaveLoading } = this.state;
 
     return (
       <View style={styles.container}>
@@ -181,13 +192,19 @@ export default class HomePage extends Component {
 
         {userAuth && (
           <View style={styles.btnViewStyle}>
-            <TouchableOpacity
-              style={[styles.btnStyle, styles.btnSecondary]}
-              onPress={this.sendLocationData}
-              title="Save Current Location"
-            >
-              <Text style={styles.btnText}>Save Current Location</Text>
-            </TouchableOpacity>
+            {
+              isSaveLoading ?
+              <ActivityIndicator style={styles.loader} size="large" color="#0000ff" />
+              : (
+                <TouchableOpacity
+                style={[styles.btnStyle, styles.btnSecondary]}
+                onPress={this.sendLocationData}
+                title="Save Current Location"
+              >
+                <Text style={styles.btnText}>Save Current Location</Text>
+              </TouchableOpacity>
+              )
+            }
           </View>
         )}
       </View>

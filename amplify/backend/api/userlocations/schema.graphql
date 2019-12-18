@@ -1,6 +1,0 @@
-type Location @model @key(fields: ["id", "createdAt"]){
-  id: ID!
-  username: String!
-  location: String
-  createdAt: AWSDateTime!
-}

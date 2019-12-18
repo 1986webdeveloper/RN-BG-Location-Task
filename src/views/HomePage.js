@@ -100,10 +100,9 @@ export default class HomePage extends Component {
       extras: { context: "force-location" }
     });
     var username = this.state.username;
-    username = username.toLowerCase();
+    username = username.toLowerCase(); 
+    
     var locationData = { 
-      id: (new Date().getTime()).toString(36),
-      createdAt: new Date(),
       username: username,
       location: JSON.stringify(location)
     };

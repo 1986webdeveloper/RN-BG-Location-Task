@@ -9,7 +9,6 @@ export const createLocation = `mutation CreateLocation(
     id
     username
     location
-    createdAt
   }
 }
 `;
@@ -21,7 +20,6 @@ export const updateLocation = `mutation UpdateLocation(
     id
     username
     location
-    createdAt
   }
 }
 `;
@@ -33,7 +31,6 @@ export const deleteLocation = `mutation DeleteLocation(
     id
     username
     location
-    createdAt
   }
 }
 `;

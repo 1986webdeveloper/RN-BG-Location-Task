@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
-    ActivityIndicator, 
+    ActivityIndicator,
     Text
 } from 'react-native';
 
@@ -57,12 +57,19 @@ export default class ListLocations extends Component {
 
                     var userLocations = allLocations.data.listLocations.items;
                     userLocations.sort(function (x, y) {
-                      var a= new Date(x.createdAt), b = new Date(y.createdAt);
-                      if (a > b) return -1;
-                      if (a < b) return 1;
-                      return 0;
+                        alert(JSON.stringify(x));
+                        try {
+                            var Xlocation = JSON.parse(x.location);
+                            var Ylocation = JSON.parse(y.location);
+                            var a = new Date(Xlocation.timestamp), b = new Date(Ylocation.timestamp);
+                            if (a > b) return -1;
+                            if (a < b) return 1;
+                            return 0; 
+                        }
+                        catch (e) {
+                            return false;
+                        }
                     })
-              
                     this.setState({ locations: userLocations });
                 }
                 this.setState({ dataLoading: false });
@@ -83,7 +90,7 @@ export default class ListLocations extends Component {
         var year = date.getFullYear();
         var hour = date.getHours();
         var minute = date.getMinutes();
-        if (minute < 10) { 
+        if (minute < 10) {
             minute = "0" + minute;
         }
         var ampm = "AM";
@@ -131,14 +138,14 @@ const styles = StyleSheet.create({
         padding: 5,
         paddingHorizontal: 10
     },
-    loader:{
+    loader: {
         marginTop: 30
     },
-    textStyle1:{
+    textStyle1: {
         textAlign: "center",
         marginTop: 30,
         fontSize: 22
-    },  
+    },
     boxItem: {
         padding: 15,
         marginVertical: 15,

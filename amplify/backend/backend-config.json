@@ -1,6 +1,6 @@
 {
 	"api": {
-		"userlocations": {
+		"bglocations": {
 			"service": "AppSync",
 			"providerPlugin": "awscloudformation",
 			"output": {
@@ -9,7 +9,7 @@
 					"defaultAuthentication": {
 						"authenticationType": "API_KEY",
 						"apiKeyConfig": {
-							"description": "store user location",
+							"description": "store user locations",
 							"apiKeyExpirationDays": "365"
 						}
 					}

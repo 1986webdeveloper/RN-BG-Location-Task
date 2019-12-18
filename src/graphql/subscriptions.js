@@ -6,7 +6,6 @@ export const onCreateLocation = `subscription OnCreateLocation {
     id
     username
     location
-    createdAt
   }
 }
 `;
@@ -15,7 +14,6 @@ export const onUpdateLocation = `subscription OnUpdateLocation {
     id
     username
     location
-    createdAt
   }
 }
 `;
@@ -24,7 +22,6 @@ export const onDeleteLocation = `subscription OnDeleteLocation {
     id
     username
     location
-    createdAt
   }
 }
 `;

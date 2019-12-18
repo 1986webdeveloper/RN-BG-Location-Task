@@ -57,7 +57,6 @@ export default class ListLocations extends Component {
 
                     var userLocations = allLocations.data.listLocations.items;
                     userLocations.sort(function (x, y) {
-                        alert(JSON.stringify(x));
                         try {
                             var Xlocation = JSON.parse(x.location);
                             var Ylocation = JSON.parse(y.location);

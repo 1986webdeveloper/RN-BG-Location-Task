@@ -24,7 +24,7 @@ export default class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      frequency: "15",
+      frequency: "60",
       username: "",
       endpoint_url: config.SERVER_URL,
       userAuth: false,
@@ -173,7 +173,7 @@ export default class HomePage extends Component {
                 this.onChangeValue("frequency", itemValue)
               }
             >
-              <Picker.Item label="1 hour" value="15" />
+              <Picker.Item label="1 hour" value="60" />
               <Picker.Item label="3 hour" value="180" />
               <Picker.Item label="6 hour" value="360" />
             </Picker>

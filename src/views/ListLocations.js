@@ -54,7 +54,16 @@ export default class ListLocations extends Component {
                     limit: 1000
                 }));
                 if (allLocations.data.listLocations.items) {
-                    this.setState({ locations: allLocations.data.listLocations.items });
+
+                    var userLocations = allLocations.data.listLocations.items;
+                    userLocations.sort(function (x, y) {
+                      var a= new Date(x.createdAt), b = new Date(y.createdAt);
+                      if (a > b) return -1;
+                      if (a < b) return 1;
+                      return 0;
+                    })
+              
+                    this.setState({ locations: userLocations });
                 }
                 this.setState({ dataLoading: false });
             }

@@ -13,7 +13,7 @@ import config from "./src/config";
 
 import API, { graphqlOperation } from '@aws-amplify/api';
 import awsconfig from './aws-exports';
-import { createLocations } from './src/graphql/mutations';
+import { createLocation } from './src/graphql/mutations';
 
 API.configure(awsconfig);
 
@@ -28,9 +28,14 @@ let BackgroundGeolocationHeadlessTask = async (event) => {
             if (username !== null) {
                 username = username.toLowerCase();
                 var location = await BackgroundGeolocation.getCurrentPosition({ extras: { 'context': 'bg-location' } });
-                var locationData = { username: username, location: JSON.stringify(location) };
-        
-                await API.graphql(graphqlOperation(createLocations, { input: locationData }));
+                var locationData = {
+                    id: (new Date().getTime()).toString(36),
+                    createdAt: new Date(),
+                    username: username,
+                    location: JSON.stringify(location)
+                };
+
+                await API.graphql(graphqlOperation(createLocation, { input: locationData }));
             }
             break;
     }
@@ -42,9 +47,14 @@ let BackgroundFetchLocation = async () => {
     if (username !== null) {
         username = username.toLowerCase();
         var location = await BackgroundGeolocation.getCurrentPosition({ extras: { 'context': 'bf-location' } });
-        var locationData = { username: username, location: JSON.stringify(location) };
+        var locationData = {
+            id: (new Date().getTime()).toString(36),
+            createdAt: new Date(),
+            username: username,
+            location: JSON.stringify(location)
+        };
 
-        await API.graphql(graphqlOperation(createLocations, { input: locationData }));
+        await API.graphql(graphqlOperation(createLocation, { input: locationData }));
     }
     BackgroundFetch.finish();
 }

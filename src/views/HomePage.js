@@ -16,8 +16,7 @@ import config from "./../config";
 
 import API, { graphqlOperation } from "@aws-amplify/api";
 import awsconfig from "./../../aws-exports";
-import { createLocations } from "./../graphql/mutations";
-import { JS } from "aws-amplify";
+import { createLocation } from "./../graphql/mutations";
 
 API.configure(awsconfig);
 
@@ -47,7 +46,7 @@ export default class HomePage extends Component {
       },
       state => {
         if (!state.enabled) {
-          BackgroundGeolocation.start(function() {
+          BackgroundGeolocation.start(function () {
             console.log("- Start success");
           });
         }
@@ -86,34 +85,35 @@ export default class HomePage extends Component {
       }
     );
 
-    let config:any = {};
+    let config = {};
     config['heartbeatInterval'] = frequency * 60;
     BackgroundGeolocation.setConfig(config);
   }
 
   onChangeValue = (type, text) => {
-    text = text.replace(/[^A-Z0-9]/ig, "").toLowerCase();
     this.setState({ [type]: text });
   };
 
   sendLocationData = async (isload = true) => {
-    if(isload) this.setState({ isSaveLoading: true });
+    if (isload) this.setState({ isSaveLoading: true });
     let location = await BackgroundGeolocation.getCurrentPosition({
       extras: { context: "force-location" }
     });
     var username = this.state.username;
-    username = username.toLowerCase(); 
-    var locationData = {
+    username = username.toLowerCase();
+    var locationData = { 
+      id: (new Date().getTime()).toString(36),
+      createdAt: new Date(),
       username: username,
       location: JSON.stringify(location)
     };
     if (username !== "") {
-      const response = await API.graphql(
-        graphqlOperation(createLocations, { input: locationData })
+      await API.graphql(
+        graphqlOperation(createLocation, { input: locationData })
       );
     }
 
-    if(isload) {
+    if (isload) {
       this.setState({ isSaveLoading: false });
       alert("Location save successfully");
     }
@@ -194,16 +194,16 @@ export default class HomePage extends Component {
           <View style={styles.btnViewStyle}>
             {
               isSaveLoading ?
-              <ActivityIndicator style={styles.loader} size="large" color="#0000ff" />
-              : (
-                <TouchableOpacity
-                style={[styles.btnStyle, styles.btnSecondary]}
-                onPress={this.sendLocationData}
-                title="Save Current Location"
-              >
-                <Text style={styles.btnText}>Save Current Location</Text>
-              </TouchableOpacity>
-              )
+                <ActivityIndicator style={styles.loader} size="large" color="#0000ff" />
+                : (
+                  <TouchableOpacity
+                    style={[styles.btnStyle, styles.btnSecondary]}
+                    onPress={this.sendLocationData}
+                    title="Save Current Location"
+                  >
+                    <Text style={styles.btnText}>Save Current Location</Text>
+                  </TouchableOpacity>
+                )
             }
           </View>
         )}

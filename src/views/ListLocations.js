@@ -9,7 +9,7 @@ import {
 
 import API, { graphqlOperation } from '@aws-amplify/api';
 import awsconfig from './../../aws-exports';
-import { listLocationss } from './../graphql/queries';
+import { listLocations } from './../graphql/queries';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import config from "./../config";
@@ -45,7 +45,7 @@ export default class ListLocations extends Component {
             var username = await AsyncStorage.getItem(config.USERNAME_KEY);
             if (username !== null) {
                 this.setState({ dataLoading: true });
-                const allLocations = await API.graphql(graphqlOperation(listLocationss, {
+                const allLocations = await API.graphql(graphqlOperation(listLocations, {
                     filter: {
                         username: {
                             eq: username.toLowerCase()
@@ -53,8 +53,8 @@ export default class ListLocations extends Component {
                     },
                     limit: 1000
                 }));
-                if (allLocations.data.listLocationss.items) {
-                    this.setState({ locations: allLocations.data.listLocationss.items });
+                if (allLocations.data.listLocations.items) {
+                    this.setState({ locations: allLocations.data.listLocations.items });
                 }
                 this.setState({ dataLoading: false });
             }

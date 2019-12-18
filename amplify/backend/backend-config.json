@@ -9,7 +9,7 @@
 					"defaultAuthentication": {
 						"authenticationType": "API_KEY",
 						"apiKeyConfig": {
-							"description": "store user locations",
+							"description": "store user location",
 							"apiKeyExpirationDays": "365"
 						}
 					}

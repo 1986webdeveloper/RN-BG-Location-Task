@@ -1,27 +1,30 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateLocations = `subscription OnCreateLocations {
-  onCreateLocations {
+export const onCreateLocation = `subscription OnCreateLocation {
+  onCreateLocation {
     id
     username
     location
+    createdAt
   }
 }
 `;
-export const onUpdateLocations = `subscription OnUpdateLocations {
-  onUpdateLocations {
+export const onUpdateLocation = `subscription OnUpdateLocation {
+  onUpdateLocation {
     id
     username
     location
+    createdAt
   }
 }
 `;
-export const onDeleteLocations = `subscription OnDeleteLocations {
-  onDeleteLocations {
+export const onDeleteLocation = `subscription OnDeleteLocation {
+  onDeleteLocation {
     id
     username
     location
+    createdAt
   }
 }
 `;

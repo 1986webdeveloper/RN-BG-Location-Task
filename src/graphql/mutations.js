@@ -1,36 +1,39 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createLocations = `mutation CreateLocations(
-  $input: CreateLocationsInput!
-  $condition: ModelLocationsConditionInput
+export const createLocation = `mutation CreateLocation(
+  $input: CreateLocationInput!
+  $condition: ModelLocationConditionInput
 ) {
-  createLocations(input: $input, condition: $condition) {
+  createLocation(input: $input, condition: $condition) {
     id
     username
     location
+    createdAt
   }
 }
 `;
-export const updateLocations = `mutation UpdateLocations(
-  $input: UpdateLocationsInput!
-  $condition: ModelLocationsConditionInput
+export const updateLocation = `mutation UpdateLocation(
+  $input: UpdateLocationInput!
+  $condition: ModelLocationConditionInput
 ) {
-  updateLocations(input: $input, condition: $condition) {
+  updateLocation(input: $input, condition: $condition) {
     id
     username
     location
+    createdAt
   }
 }
 `;
-export const deleteLocations = `mutation DeleteLocations(
-  $input: DeleteLocationsInput!
-  $condition: ModelLocationsConditionInput
+export const deleteLocation = `mutation DeleteLocation(
+  $input: DeleteLocationInput!
+  $condition: ModelLocationConditionInput
 ) {
-  deleteLocations(input: $input, condition: $condition) {
+  deleteLocation(input: $input, condition: $condition) {
     id
     username
     location
+    createdAt
   }
 }
 `;

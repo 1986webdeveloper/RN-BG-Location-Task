@@ -647,7 +647,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.acquaint.bglocation;
 				PRODUCT_NAME = BackgroundLocationTask;
-				PROVISIONING_PROFILE_SPECIFIER = WildCardNew;
+				PROVISIONING_PROFILE_SPECIFIER = UmangClient;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -669,7 +669,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.acquaint.bglocation;
 				PRODUCT_NAME = BackgroundLocationTask;
-				PROVISIONING_PROFILE_SPECIFIER = WildCardNew;
+				PROVISIONING_PROFILE_SPECIFIER = UmangClient;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

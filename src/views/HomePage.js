@@ -46,7 +46,7 @@ export default class HomePage extends Component {
       },
       state => {
         if (!state.enabled) {
-          BackgroundGeolocation.start(function () {
+          BackgroundGeolocation.start(function() {
             console.log("- Start success");
           });
         }
@@ -86,7 +86,7 @@ export default class HomePage extends Component {
     );
 
     let config = {};
-    config['heartbeatInterval'] = frequency * 60;
+    config["heartbeatInterval"] = frequency * 60;
     BackgroundGeolocation.setConfig(config);
   }
 
@@ -96,25 +96,28 @@ export default class HomePage extends Component {
 
   sendLocationData = async (isload = true) => {
     if (isload) this.setState({ isSaveLoading: true });
-    let location = await BackgroundGeolocation.getCurrentPosition({
-      extras: { context: "force-location" }
-    });
-    var username = this.state.username;
-    username = username.toLowerCase(); 
-    
-    var locationData = { 
-      username: username,
-      location: JSON.stringify(location)
-    };
-    if (username !== "") {
-      await API.graphql(
-        graphqlOperation(createLocation, { input: locationData })
-      );
-    }
+    try {
+      let location = await BackgroundGeolocation.getCurrentPosition({
+        extras: { context: "force-location" }
+      });
+      var username = this.state.username;
+      username = username.toLowerCase();
 
-    if (isload) {
-      this.setState({ isSaveLoading: false });
-      alert("Location save successfully");
+      var locationData = {
+        username: username,
+        location: JSON.stringify(location)
+      };
+      if (username !== "") {
+        await API.graphql(
+          graphqlOperation(createLocation, { input: locationData })
+        );
+      }
+      if (isload) {
+        this.setState({ isSaveLoading: false });
+        alert("Location save successfully");
+      }
+    } catch (error) {
+      alert("Please try again later!");
     }
   };
 
@@ -191,19 +194,21 @@ export default class HomePage extends Component {
 
         {userAuth && (
           <View style={styles.btnViewStyle}>
-            {
-              isSaveLoading ?
-                <ActivityIndicator style={styles.loader} size="large" color="#0000ff" />
-                : (
-                  <TouchableOpacity
-                    style={[styles.btnStyle, styles.btnSecondary]}
-                    onPress={this.sendLocationData}
-                    title="Save Current Location"
-                  >
-                    <Text style={styles.btnText}>Save Current Location</Text>
-                  </TouchableOpacity>
-                )
-            }
+            {isSaveLoading ? (
+              <ActivityIndicator
+                style={styles.loader}
+                size="large"
+                color="#0000ff"
+              />
+            ) : (
+              <TouchableOpacity
+                style={[styles.btnStyle, styles.btnSecondary]}
+                onPress={this.sendLocationData}
+                title="Save Current Location"
+              >
+                <Text style={styles.btnText}>Save Current Location</Text>
+              </TouchableOpacity>
+            )}
           </View>
         )}
       </View>

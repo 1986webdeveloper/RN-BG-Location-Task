@@ -29,8 +29,6 @@ let BackgroundGeolocationHeadlessTask = async (event) => {
                 username = username.toLowerCase();
                 var location = await BackgroundGeolocation.getCurrentPosition({ extras: { 'context': 'bg-location' } });
                 var locationData = {
-                    id: (new Date().getTime()).toString(36),
-                    createdAt: new Date(),
                     username: username,
                     location: JSON.stringify(location)
                 };
@@ -48,8 +46,6 @@ let BackgroundFetchLocation = async () => {
         username = username.toLowerCase();
         var location = await BackgroundGeolocation.getCurrentPosition({ extras: { 'context': 'bf-location' } });
         var locationData = {
-            id: (new Date().getTime()).toString(36),
-            createdAt: new Date(),
             username: username,
             location: JSON.stringify(location)
         };

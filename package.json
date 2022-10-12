@@ -14,7 +14,7 @@
     "react": "16.8.6",
     "react-native": "0.60.1",
     "react-native-background-fetch": "^2.7.1",
-    "react-native-background-geolocation": "^3.4.2",
+    "react-native-background-geolocation": "^4.8.2",
     "react-native-gesture-handler": "^1.5.2",
     "react-native-reanimated": "^1.4.0",
     "react-native-tab-view": "^2.11.0"
